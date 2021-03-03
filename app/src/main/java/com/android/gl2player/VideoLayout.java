@@ -1,6 +1,6 @@
 package com.android.gl2player;
 
-public class GL2Layout extends GL2FloatBuffer
+public class VideoLayout extends GL2FloatBuffer
 {
     private float[] vertices_data=null;
 
