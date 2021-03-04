@@ -1,6 +1,6 @@
 package com.android.gl2player;
 
-public class FullscreenQuadUV extends GL2FloatBuffer{
+public class QuadUV extends GL2FloatBuffer{
 
     private static final float QuadUVData[] = {
             0.0f, 0.0f,
@@ -8,7 +8,7 @@ public class FullscreenQuadUV extends GL2FloatBuffer{
             0.0f, 1.0f,
             1.0f, 1.0f};
 
-    FullscreenQuadUV()
+    QuadUV()
     {
         init(QuadUVData);
     }

@@ -3,6 +3,7 @@ package com.android.gl2player;
 import android.graphics.Bitmap;
 import android.opengl.GLES20;
 import android.opengl.GLUtils;
+import android.util.Log;
 
 public class GL2Texture {
     protected int texture_id=-1;
@@ -25,12 +26,24 @@ public class GL2Texture {
 
     public void bind()
     {
+        GLES20.glEnable(texture_type);
         GLES20.glBindTexture(texture_type, texture_id);
     }
+
+    public void bind(int index)
+    {
+        GLES20.glActiveTexture(GLES20.GL_TEXTURE0+index);
+        bind();
+    }
+
+    public int getID() {return texture_id;}
+    public int getType(){return texture_type;}
 
     public void set(Bitmap bmp)
     {
         bind();
+
+        GLES20.glGetError();
 
         if(width==0||height==0)
         {
@@ -47,5 +60,8 @@ public class GL2Texture {
         {
             ///
         }
+
+        int no=GLES20.glGetError();
+        Log.e("GL2Texture","set result="+String.valueOf(no));
     }
 }

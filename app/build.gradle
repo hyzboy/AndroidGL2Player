@@ -29,5 +29,6 @@ android {
             path 'src/main/cpp/CMakeLists.txt'
         }
     }
+    buildToolsVersion '30.0.3'
 }
 

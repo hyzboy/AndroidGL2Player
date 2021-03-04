@@ -26,10 +26,10 @@ public class GL2FloatBuffer {
         setData(buf);
     }
 
-    public void bind(int handle)
+    public void bind(int sampler_location)
     {
         vertices.position(0);
-        GLES20.glVertexAttribPointer(handle, 2, GLES20.GL_FLOAT, false, 0, vertices);
-        GLES20.glEnableVertexAttribArray(handle);
+        GLES20.glVertexAttribPointer(sampler_location, 2, GLES20.GL_FLOAT, false, 0, vertices);
+        GLES20.glEnableVertexAttribArray(sampler_location);
     }
 }

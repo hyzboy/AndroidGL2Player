@@ -24,7 +24,7 @@ public class RenderLayout extends GL2FloatBuffer
      * @param w     宽
      * @param h     高
      */
-    public boolean Set(float l,float t,float w,float h)
+    public boolean set(float l, float t, float w, float h)
     {
         if (w <= 0 || h <= 0||w > 1 || h > 1) {
             return(false);
