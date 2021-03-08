@@ -13,6 +13,8 @@ class DrawBitmap extends DrawObject
 
     public DrawBitmap()
     {
+        this(ObjectType.Bitmap);
+
         texture.init(GLES20.GL_TEXTURE_2D);
     }
 

@@ -10,7 +10,7 @@
     </facet>
     <facet type="native-android-gradle" name="Native-Android-Gradle">
       <configuration>
-        <option name="SELECTED_BUILD_VARIANT" value="debug-x86_64" />
+        <option name="SELECTED_BUILD_VARIANT" value="debug-x86" />
       </configuration>
     </facet>
     <facet type="android" name="Android">
@@ -46,7 +46,7 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../app/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/../../../app/build" />
     </content>
-    <orderEntry type="jdk" jdkName="Android API 29 Platform" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Android API 30 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

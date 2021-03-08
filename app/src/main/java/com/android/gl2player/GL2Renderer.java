@@ -17,7 +17,23 @@ public class GL2Renderer implements GLSurfaceView.Renderer, SurfaceTexture.OnFra
 {
     private boolean update_video = false;
 
-    private DrawBitmap camera_bitmap=null;
+    private final int MAX_DRAW_OBJECT=4;
+
+    private DrawObject draw_object[]={null,null,null,null};
+    private int draw_index[];
+
+    GL2Renderer()
+    {
+        draw_index=new int[MAX_DRAW_OBJECT];
+
+        for(int i=0;i<MAX_DRAW_OBJECT;i++)
+            draw_index[i]=i;
+    }
+
+    public final int GetMaxDrawObject()
+    {
+        return MAX_DRAW_OBJECT;
+    }
 
     @Override
     public void onDrawFrame(GL10 gl)
@@ -28,6 +44,9 @@ public class GL2Renderer implements GLSurfaceView.Renderer, SurfaceTexture.OnFra
                 //更新视频画面
 
                 update_video = false;
+                for(int i=0;i<MAX_DRAW_OBJECT;i++)
+                    if(draw_object[i]!=null)
+                        draw_object[i].update();
             }
         }
 
@@ -36,7 +55,16 @@ public class GL2Renderer implements GLSurfaceView.Renderer, SurfaceTexture.OnFra
         GLES20.glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
         GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);
 
-        camera_bitmap.draw();
+        int index;
+
+        for(int i=0;i<MAX_DRAW_OBJECT;i++)
+        {
+            index=draw_index[i];
+
+            if(index<0||index>MAX_DRAW_OBJECT)continue;
+
+            draw_object[index].draw();
+        }
     }
 
     @Override
@@ -68,8 +96,14 @@ public class GL2Renderer implements GLSurfaceView.Renderer, SurfaceTexture.OnFra
         update_video = true;
     }
 
-    public void setBitmap(Bitmap bmp,int rotate)
+    public boolean setBitmap(int index,Bitmap bmp,int rotate)
     {
+        if(index<0||index>=MAX_DRAW_OBJECT)return(false);
+
+        DrawObject obj=draw_object[index];
+
+        if(obj==null)return(false);
+
         if(camera_bitmap==null) {
             camera_bitmap = new DrawBitmap();
             camera_bitmap.render_layout.set(0,0,1,1);       //设定为全屏
@@ -80,11 +114,28 @@ public class GL2Renderer implements GLSurfaceView.Renderer, SurfaceTexture.OnFra
 
     public void setPlay(int index, MediaPlayer mp)
     {
+        if(index<0||index>=MAX_DRAW_OBJECT)return(false);
 
     }
 
-    public void setLayout(int index,float left,float top,float width,float height)
+    /**
+     * 设置绘制顺序
+     * @param order
+     */
+    public void setDrawOrder(int[] order)
     {
+        for(int i=0;i<MAX_DRAW_OBJECT;i++)
+            draw_index[i]=order[i];
+    }
+
+    public boolean setLayout(int index,float left,float top,float width,float height)
+    {
+        if(index<0||index>=MAX_DRAW_OBJECT)return(false);
+
+        DrawObject obj=draw_object[index];
+
+        if(obj==null)return(false);
+
         if(index==0)    //摄像机
         {
             camera_bitmap.render_layout.set(left,top,width,height);

@@ -5,6 +5,12 @@ package com.android.gl2player;
  */
 class DrawVideo extends DrawObject
 {
+    GL2VideoTexture video_texture=null;
+
+    @Override
+    void update()
+    {}
+
     @Override
     void draw()
     {

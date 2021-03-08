@@ -5,14 +5,33 @@ package com.android.gl2player;
  */
 class DrawObject
 {
+    public enum ObjectType
+    {
+        Bitmap,
+        Video,
+    };
+
+    private ObjectType type;
+
     protected static final QuadUV texture_uv =new QuadUV();
 
     public RenderLayout render_layout=new RenderLayout();
+
+    public DrawObject(ObjectType ot)
+    {
+        type=ot;
+    }
+
+    public final ObjectType GetObjectType()
+    {
+        return type;
+    }
 
     public DrawObject()
     {
         render_layout.init();
     }
 
-    void draw(){};
+    public void update(){};
+    public void draw(){};
 }
