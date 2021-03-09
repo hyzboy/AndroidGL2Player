@@ -13,7 +13,7 @@ class DrawBitmap extends DrawObject
 
     public DrawBitmap()
     {
-        this(ObjectType.Bitmap);
+        super(ObjectType.Bitmap);
 
         texture.init(GLES20.GL_TEXTURE_2D);
     }
@@ -24,7 +24,7 @@ class DrawBitmap extends DrawObject
     }
 
     @Override
-    void draw()
+    public void draw()
     {
         GLES20.glDisable(GLES20.GL_BLEND);
         shader.begin();

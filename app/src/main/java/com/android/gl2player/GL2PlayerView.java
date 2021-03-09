@@ -100,7 +100,7 @@ class GL2PlayerView extends GLSurfaceView {
                              new ConfigChooser(5, 6, 5, 0, depth, stencil) );
 
         /* Set the renderer responsible for frame rendering */
-        setRenderer(new GL2Renderer());
+        setRenderer(new GL2Renderer(getContext()));
     }
 
     private static class ContextFactory implements GLSurfaceView.EGLContextFactory {

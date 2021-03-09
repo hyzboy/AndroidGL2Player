@@ -2,6 +2,7 @@ package com.android.gl2player;
 
 import javax.microedition.khronos.egl.EGLConfig;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -13,17 +14,20 @@ import android.opengl.GLSurfaceView;
 
 import javax.microedition.khronos.opengles.GL10;
 
-public class GL2Renderer implements GLSurfaceView.Renderer, SurfaceTexture.OnFrameAvailableListener
+public class GL2Renderer implements GLSurfaceView.Renderer
 {
     private boolean update_video = false;
 
     private final int MAX_DRAW_OBJECT=4;
 
+    private Context sv_context;
     private DrawObject draw_object[]={null,null,null,null};
     private int draw_index[];
 
-    GL2Renderer()
+    GL2Renderer(Context c)
     {
+        sv_context=c;
+
         draw_index=new int[MAX_DRAW_OBJECT];
 
         for(int i=0;i<MAX_DRAW_OBJECT;i++)
@@ -38,18 +42,6 @@ public class GL2Renderer implements GLSurfaceView.Renderer, SurfaceTexture.OnFra
     @Override
     public void onDrawFrame(GL10 gl)
     {
-        synchronized (this) {
-            if (update_video) {
-
-                //更新视频画面
-
-                update_video = false;
-                for(int i=0;i<MAX_DRAW_OBJECT;i++)
-                    if(draw_object[i]!=null)
-                        draw_object[i].update();
-            }
-        }
-
         GLES20.glGetError();        //清空错误
 
         GLES20.glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
@@ -79,7 +71,7 @@ public class GL2Renderer implements GLSurfaceView.Renderer, SurfaceTexture.OnFra
             for(int col=0;col<size;col++)
                 bmp.setPixel(col,row,((row&1)==(col&1))?Color.WHITE:Color.BLACK);
 
-        setBitmap(bmp,0);
+        setBitmap(0,bmp,0);
     }
 
     @Override
@@ -91,31 +83,67 @@ public class GL2Renderer implements GLSurfaceView.Renderer, SurfaceTexture.OnFra
         }
     }
 
-    @Override
-    public synchronized void onFrameAvailable(SurfaceTexture surface) {
-        update_video = true;
-    }
-
     public boolean setBitmap(int index,Bitmap bmp,int rotate)
     {
         if(index<0||index>=MAX_DRAW_OBJECT)return(false);
 
         DrawObject obj=draw_object[index];
 
-        if(obj==null)return(false);
+        if(obj==null)
+        {
+            DrawBitmap obj_bmp=new DrawBitmap();
+            obj_bmp.render_layout.set(0,0,1,1);       //设定为全屏
 
-        if(camera_bitmap==null) {
-            camera_bitmap = new DrawBitmap();
-            camera_bitmap.render_layout.set(0,0,1,1);       //设定为全屏
+            draw_object[index]=obj_bmp;
+            obj_bmp.update(bmp,rotate);
+        }
+        else
+        {
+            if(obj.GetObjectType()!=DrawObject.ObjectType.Bitmap)
+                return(false);
+
+            DrawBitmap obj_bmp= (DrawBitmap) obj;
+            obj_bmp.update(bmp,rotate);
         }
 
-        camera_bitmap.update(bmp,rotate);
+        return(true);
     }
 
     public void setPlay(int index, MediaPlayer mp)
     {
-        if(index<0||index>=MAX_DRAW_OBJECT)return(false);
+        if(index<0||index>=MAX_DRAW_OBJECT)return;
 
+        DrawObject obj=draw_object[index];
+
+        if(obj==null)
+        {
+            DrawVideo video=new DrawVideo(mp);
+
+            video.play();
+        }
+        else
+        {
+            if (obj.GetObjectType() != DrawObject.ObjectType.Video) return;
+
+            DrawVideo video = (DrawVideo) obj;
+            video.play();
+        }
+    }
+
+    public void setStop(int index)
+    {
+        if(index<0||index>=MAX_DRAW_OBJECT)return;
+
+        DrawObject obj=draw_object[index];
+
+        if(obj==null)
+            return;
+
+        if(obj.GetObjectType()!=DrawObject.ObjectType.Video)return;
+
+        DrawVideo video= (DrawVideo) obj;
+
+        video.stop();
     }
 
     /**
@@ -136,13 +164,7 @@ public class GL2Renderer implements GLSurfaceView.Renderer, SurfaceTexture.OnFra
 
         if(obj==null)return(false);
 
-        if(index==0)    //摄像机
-        {
-            camera_bitmap.render_layout.set(left,top,width,height);
-        }
-        else            //其它
-        {
-
-        }
+        obj.render_layout.set(left,top,width,height);
+        return(true);
     }
 }

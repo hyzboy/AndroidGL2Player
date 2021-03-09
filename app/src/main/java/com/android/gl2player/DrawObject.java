@@ -20,16 +20,12 @@ class DrawObject
     public DrawObject(ObjectType ot)
     {
         type=ot;
+        render_layout.init();
     }
 
     public final ObjectType GetObjectType()
     {
         return type;
-    }
-
-    public DrawObject()
-    {
-        render_layout.init();
     }
 
     public void update(){};
