@@ -12,6 +12,8 @@ import android.media.MediaPlayer;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 
+import java.nio.Buffer;
+
 import javax.microedition.khronos.opengles.GL10;
 
 public class GL2Renderer implements GLSurfaceView.Renderer
@@ -19,6 +21,8 @@ public class GL2Renderer implements GLSurfaceView.Renderer
     private boolean update_video = false;
 
     private final int MAX_DRAW_OBJECT=4;
+
+    private int screen_width,screen_height;
 
     private Context sv_context;
     private DrawObject draw_object[]={null,null,null,null};
@@ -62,6 +66,9 @@ public class GL2Renderer implements GLSurfaceView.Renderer
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height)
     {
+        screen_width=width;
+        screen_height=height;
+
         //创建测试图片
         final int size=256;
 
@@ -72,6 +79,14 @@ public class GL2Renderer implements GLSurfaceView.Renderer
                 bmp.setPixel(col,row,((row&1)==(col&1))?Color.WHITE:Color.BLACK);
 
         setBitmap(0,bmp,0);
+    }
+
+    public int GetScreenWidth(){return screen_width;}
+    public int GetScreenHeight(){return screen_height;}
+
+    public void GetImage(Buffer buf)
+    {
+        GLES20.glReadPixels(0,0,screen_width,screen_height,GLES20.GL_RGBA,GLES20.GL_UNSIGNED_BYTE,buf);
     }
 
     @Override
