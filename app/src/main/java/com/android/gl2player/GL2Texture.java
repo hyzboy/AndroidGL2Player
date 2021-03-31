@@ -10,18 +10,23 @@ public class GL2Texture {
     private int texture_type=GLES20.GL_TEXTURE_2D;
     private int width=0,height=0;
 
-    public void init(int tt)
+    private void CreateTexture()
     {
         int[] textures=new int[1];
 
         GLES20.glGenTextures(1,textures,0);
         texture_id =textures[0];
-        texture_type=tt;
 
         GLES20.glBindTexture(texture_type, texture_id);
 
         GLES20.glTexParameterf(texture_type, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
         GLES20.glTexParameterf(texture_type, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
+    }
+
+    public void init(int tt)
+    {
+        texture_type=tt;
+        CreateTexture();
     }
 
     public void bind()
@@ -58,7 +63,15 @@ public class GL2Texture {
         }
         else
         {
-            ///
+            int[] textures=new int[1];
+
+            textures[0]=texture_id;
+            GLES20.glDeleteTextures(1,textures,0);
+
+            CreateTexture();
+            GLUtils.texImage2D(texture_type,0,bmp,0);
+            width=bmp.getWidth();
+            height=bmp.getHeight();
         }
 
         int no=GLES20.glGetError();
