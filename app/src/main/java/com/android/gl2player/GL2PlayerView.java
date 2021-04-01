@@ -35,6 +35,7 @@ package com.android.gl2player;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
+import android.util.AttributeSet;
 import android.util.Log;
 
 import javax.microedition.khronos.egl.EGL10;
@@ -74,6 +75,12 @@ class GL2PlayerView extends GLSurfaceView {
         init(translucent, depth, stencil);
     }
 
+    public GL2PlayerView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(false, 0, 0);
+    }
+
+    private GL2Renderer mGL2Renderer;
     private void init(boolean translucent, int depth, int stencil) {
 
         /* By default, GLSurfaceView() creates a RGB_565 opaque surface.
@@ -100,7 +107,12 @@ class GL2PlayerView extends GLSurfaceView {
                              new ConfigChooser(5, 6, 5, 0, depth, stencil) );
 
         /* Set the renderer responsible for frame rendering */
-        setRenderer(new GL2Renderer(getContext()));
+        mGL2Renderer=new GL2Renderer(getContext());
+        setRenderer(mGL2Renderer);
+    }
+
+    public GL2Renderer getGL2Renderer(){
+        return mGL2Renderer;
     }
 
     private static class ContextFactory implements GLSurfaceView.EGLContextFactory {

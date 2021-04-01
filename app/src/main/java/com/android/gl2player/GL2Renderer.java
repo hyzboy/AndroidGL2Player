@@ -5,12 +5,16 @@ import javax.microedition.khronos.egl.EGLConfig;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Picture;
+import android.graphics.PixelFormat;
 import android.graphics.SurfaceTexture;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
+import android.view.View;
 
 import java.nio.Buffer;
 
@@ -57,9 +61,12 @@ public class GL2Renderer implements GLSurfaceView.Renderer
         {
             index=draw_index[i];
 
-            if(index<0||index>MAX_DRAW_OBJECT)continue;
-
-            draw_object[index].draw();
+            if(index<0||index>MAX_DRAW_OBJECT) {
+                continue;
+            }
+            if(draw_object[index]!=null){
+                draw_object[index].draw();
+            }
         }
     }
 
@@ -69,16 +76,22 @@ public class GL2Renderer implements GLSurfaceView.Renderer
         screen_width=width;
         screen_height=height;
 
-        //创建测试图片
-        final int size=256;
+        Bitmap bitmap=drawableToBitamp(sv_context.getDrawable(R.drawable.tran),screen_width,screen_height);
+        setBitmap(0,bitmap,0);
+    }
 
-        Bitmap bmp=Bitmap.createBitmap(size,size,Bitmap.Config.RGB_565);
-
-        for(int row=0;row<size;row++)
-            for(int col=0;col<size;col++)
-                bmp.setPixel(col,row,((row&1)==(col&1))?Color.WHITE:Color.BLACK);
-
-        setBitmap(0,bmp,0);
+    private Bitmap drawableToBitamp(Drawable drawable,int w,int h)
+    {
+        Bitmap bitmap = null;
+        System.out.println("Drawable转Bitmap");
+        Bitmap.Config config = drawable.getOpacity()
+                != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565;
+        bitmap = Bitmap.createBitmap(w,h,config);
+        //注意，下面三行代码要用到，否在在View或者surfaceview里的canvas.drawBitmap会看不到图
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, w, h);
+        drawable.draw(canvas);
+        return bitmap;
     }
 
     public int GetScreenWidth(){return screen_width;}

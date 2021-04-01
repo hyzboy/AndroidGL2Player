@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <com.android.gl2player.GL2PlayerView
+        android:layout_width="300px"
+        android:layout_height="400px"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:id="@+id/GL2PlayerView"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/test_bt"
+        android:layout_alignParentBottom="true"
+        android:text="test"
+        />
+    <ImageView
+        android:layout_width="200px"
+        android:layout_height="200px"
+        android:scaleType="fitXY"
+        android:id="@+id/test_iv"
+        />
+</RelativeLayout>

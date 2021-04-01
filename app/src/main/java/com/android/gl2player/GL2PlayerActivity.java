@@ -17,17 +17,44 @@
 package com.android.gl2player;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 
 
 public class GL2PlayerActivity extends Activity {
 
     GL2PlayerView mView;
-
+    private Bitmap mBitmap=null;
+    float w=0.4f;
+    float h=0.4f;
     @Override protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        mView = new GL2PlayerView(getApplication());
-	setContentView(mView);
+        setContentView(R.layout.activity_main);
+        mView=findViewById(R.id.GL2PlayerView);
+
+        findViewById(R.id.test_bt).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(){
+                    @Override
+                    public void run() {
+                        super.run();
+                        if(mBitmap!=null && !mBitmap.isRecycled()){
+                            mBitmap.recycle();
+                        }
+                        mView.getGL2Renderer().setLayout(0,0.5f,0.5f,w,h);
+                        mBitmap=BitmapFactory.decodeResource(getResources(),R.mipmap.rxkt_demo1);
+                        mView.getGL2Renderer().setBitmap(0,mBitmap,0);
+                        w+=0.05;
+                        h+=0.05;
+                    }
+                }.start();
+
+            }
+        });
     }
 
     @Override protected void onPause() {

@@ -6,6 +6,7 @@
       android:allowBackup="false"
       android:fullBackupContent="false"
       android:icon="@mipmap/ic_launcher"
+      android:hardwareAccelerated="true"
       android:label="@string/gl2player_activity">
     <activity android:name=".GL2PlayerActivity"
               android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
