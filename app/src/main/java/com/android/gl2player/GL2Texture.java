@@ -10,14 +10,30 @@ public class GL2Texture {
     private int texture_type=GLES20.GL_TEXTURE_2D;
     private int width=0,height=0;
 
+    private void ClearGLError()
+    {
+        GLES20.glGetError();
+    }
+
+    private void CheckGLError(String funcname)
+    {
+        int no=GLES20.glGetError();
+
+        if(no!=GLES20.GL_NO_ERROR)
+            Log.e("GL2Texture","func["+funcname+"] error: "+String.valueOf(no));
+    }
+
     private void CreateTexture()
     {
         int[] textures=new int[1];
 
+        ClearGLError();
         GLES20.glGenTextures(1,textures,0);
+        CheckGLError("glGenTextures");
+
         texture_id =textures[0];
 
-        GLES20.glBindTexture(texture_type, texture_id);
+        bind();
 
         GLES20.glTexParameterf(texture_type, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
         GLES20.glTexParameterf(texture_type, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
@@ -46,35 +62,16 @@ public class GL2Texture {
 
     public void set(Bitmap bmp)
     {
-        bind();
+        int[] old_textures = new int[1];
+        old_textures[0] = texture_id;
 
-        GLES20.glGetError();
+        CreateTexture();
+        GLUtils.texImage2D(texture_type,0,bmp,0);
+        CheckGLError("texImage2D");
+        width=bmp.getWidth();
+        height=bmp.getHeight();
 
-        if(width==0||height==0)
-        {
-            GLUtils.texImage2D(texture_type,0,bmp,0);
-            width=bmp.getWidth();
-            height=bmp.getHeight();
-        }
-        else if(width==bmp.getWidth()
-              &&height==bmp.getHeight())
-        {
-            GLUtils.texSubImage2D(texture_type,0,0,0,bmp);
-        }
-        else
-        {
-            int[] textures=new int[1];
-
-            textures[0]=texture_id;
-            GLES20.glDeleteTextures(1,textures,0);
-
-            CreateTexture();
-            GLUtils.texImage2D(texture_type,0,bmp,0);
-            width=bmp.getWidth();
-            height=bmp.getHeight();
-        }
-
-        int no=GLES20.glGetError();
-        Log.e("GL2Texture","set result="+String.valueOf(no));
+        if(old_textures[0]!=-1)
+            GLES20.glDeleteTextures(1, old_textures, 0);
     }
 }

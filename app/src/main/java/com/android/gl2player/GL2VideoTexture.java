@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class GL2VideoTexture extends GL2Texture implements SurfaceTexture.OnFrameAvailableListener{
 
-    private static int GL_TEXTURE_EXTERNAL_OES = 0x8D65;
+    private final int GL_TEXTURE_EXTERNAL_OES = 0x8D65;
 
     public SurfaceTexture surfaceTexture;
 

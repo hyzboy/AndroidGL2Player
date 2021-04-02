@@ -17,6 +17,8 @@ import android.opengl.GLSurfaceView;
 import android.view.View;
 
 import java.nio.Buffer;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -31,6 +33,8 @@ public class GL2Renderer implements GLSurfaceView.Renderer
     private Context sv_context;
     private DrawObject draw_object[]={null,null,null,null};
     private int draw_index[];
+
+    private Queue<GL2Event> event_queue=new LinkedList<GL2Event>();
 
     GL2Renderer(Context c)
     {
@@ -47,9 +51,21 @@ public class GL2Renderer implements GLSurfaceView.Renderer
         return MAX_DRAW_OBJECT;
     }
 
+    private void RunAsyncEvent()
+    {
+        if(event_queue.size()==0)return;
+
+        for(GL2Event e:event_queue)
+            e.run();
+
+        event_queue.clear();
+    }
+
     @Override
     public void onDrawFrame(GL10 gl)
     {
+        RunAsyncEvent();
+
         GLES20.glGetError();        //清空错误
 
         GLES20.glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
@@ -137,6 +153,17 @@ public class GL2Renderer implements GLSurfaceView.Renderer
         return(true);
     }
 
+    public void AsyncSetBitmap(int index,Bitmap bmp,int rotate)
+    {
+        if(index<0||index>=MAX_DRAW_OBJECT)return;
+
+        DrawObject obj=draw_object[index];
+
+        if(obj==null)return;
+
+        event_queue.add(new GL2EventSetBitmap(obj,bmp,rotate));
+    }
+
     public void setPlay(int index, MediaPlayer mp)
     {
         if(index<0||index>=MAX_DRAW_OBJECT)return;
@@ -187,12 +214,19 @@ public class GL2Renderer implements GLSurfaceView.Renderer
     public boolean setLayout(int index,float left,float top,float width,float height)
     {
         if(index<0||index>=MAX_DRAW_OBJECT)return(false);
-
         DrawObject obj=draw_object[index];
-
         if(obj==null)return(false);
 
         obj.render_layout.set(left,top,width,height);
         return(true);
+    }
+
+    public void AsyncSetLayout(int index,float left,float top,float width,float height)
+    {
+        if(index<0||index>=MAX_DRAW_OBJECT)return;
+        DrawObject obj=draw_object[index];
+        if(obj==null)return;
+
+        event_queue.add(new GL2EventSetLayout(obj,left,top,width,height));
     }
 }

@@ -45,9 +45,16 @@ public class GL2PlayerActivity extends Activity {
                         if(mBitmap!=null && !mBitmap.isRecycled()){
                             mBitmap.recycle();
                         }
-                        mView.getGL2Renderer().setLayout(0,0.5f,0.5f,w,h);
+
                         mBitmap=BitmapFactory.decodeResource(getResources(),R.mipmap.rxkt_demo1);
-                        mView.getGL2Renderer().setBitmap(0,mBitmap,0);
+
+                        {
+                            GL2Renderer renderer = mView.getGL2Renderer();
+
+                            renderer.AsyncSetBitmap(0,mBitmap,0);
+                            renderer.AsyncSetLayout(0,0.5f,0.5f,w,h);
+                        }
+
                         w+=0.05;
                         h+=0.05;
                     }
