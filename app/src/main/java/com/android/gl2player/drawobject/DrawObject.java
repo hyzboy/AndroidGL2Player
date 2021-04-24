@@ -6,12 +6,13 @@ import com.android.gl2player.gl.RenderLayout;
 /**
  * 绘制对象基类
  */
-public class DrawObject
+public abstract class DrawObject
 {
     public enum ObjectType
     {
         Bitmap,
         Video,
+        Text,
     };
 
     private ObjectType type;
@@ -31,6 +32,10 @@ public class DrawObject
         return type;
     }
 
-    public void update(){};
-    public void draw(){};
+    public boolean isBitmap(){return type==ObjectType.Bitmap;}
+    public boolean isVideo(){return type==ObjectType.Video;}
+    public boolean isText(){return type==ObjectType.Text;}
+
+    public abstract void update();
+    public abstract void draw();
 }

@@ -3,24 +3,16 @@ package com.android.gl2player.gl;
 import android.graphics.Bitmap;
 import android.opengl.GLES20;
 import android.opengl.GLUtils;
-import android.util.Log;
 
-public class GL2Texture {
+public class GL2Texture extends GLClass
+{
     protected int texture_id=-1;
     private int texture_type=GLES20.GL_TEXTURE_2D;
     private int width=0,height=0;
 
-    private void ClearGLError()
+    public GL2Texture()
     {
-        GLES20.glGetError();
-    }
-
-    private void CheckGLError(String funcname)
-    {
-        int no=GLES20.glGetError();
-
-        if(no!=GLES20.GL_NO_ERROR)
-            Log.e("GL2Texture","func["+funcname+"] error: "+String.valueOf(no));
+        super("GL2Texture");
     }
 
     private void CreateTexture()
@@ -36,7 +28,10 @@ public class GL2Texture {
         bind();
 
         GLES20.glTexParameterf(texture_type, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
+        CheckGLError("glTexParameterf(MIN_FILTER,LINEAR)");
+
         GLES20.glTexParameterf(texture_type, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
+        CheckGLError("glTexParameterf(MAG_FILTER,LINEAR)");
     }
 
     public void init(int tt)
@@ -45,10 +40,24 @@ public class GL2Texture {
         CreateTexture();
     }
 
+    public void init(int tt,Bitmap bmp)
+    {
+        init(tt);
+
+        ClearGLError();
+        GLUtils.texImage2D(texture_type,0,bmp,0);
+        CheckGLError("texImage2D");
+        width=bmp.getWidth();
+        height=bmp.getHeight();
+    }
+
     public void bind()
     {
-        GLES20.glEnable(texture_type);
+        ClearGLError();
+        //GLES20.glEnable(texture_type);
+        //CheckGLError("glEnable("+texture_type+")");
         GLES20.glBindTexture(texture_type, texture_id);
+        CheckGLError("glBindTexture("+texture_type+")");
     }
 
     public void bind(int index)
@@ -66,6 +75,7 @@ public class GL2Texture {
         old_textures[0] = texture_id;
 
         CreateTexture();
+        ClearGLError();
         GLUtils.texImage2D(texture_type,0,bmp,0);
         CheckGLError("texImage2D");
         width=bmp.getWidth();

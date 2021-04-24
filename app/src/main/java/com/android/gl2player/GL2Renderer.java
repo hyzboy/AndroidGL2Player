@@ -1,7 +1,5 @@
 package com.android.gl2player;
 
-import javax.microedition.khronos.egl.EGLConfig;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -16,12 +14,14 @@ import com.android.gl2player.async.GL2EventSetBitmap;
 import com.android.gl2player.async.GL2EventSetLayout;
 import com.android.gl2player.drawobject.DrawBitmap;
 import com.android.gl2player.drawobject.DrawObject;
+import com.android.gl2player.drawobject.DrawText;
 import com.android.gl2player.drawobject.DrawVideo;
 
 import java.nio.Buffer;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 public class GL2Renderer implements GLSurfaceView.Renderer
@@ -35,6 +35,9 @@ public class GL2Renderer implements GLSurfaceView.Renderer
     private Context sv_context;
     private DrawObject draw_object[]={null,null,null,null};
     private int draw_index[];
+
+//    private Vector<DrawText> draw_text_list=new Vector<DrawText>();
+    DrawText dt=null;
 
     private Queue<GL2Event> event_queue=new LinkedList<GL2Event>();
 
@@ -86,6 +89,9 @@ public class GL2Renderer implements GLSurfaceView.Renderer
                 draw_object[index].draw();
             }
         }
+
+        if(dt!=null)
+            dt.draw();
     }
 
     @Override
@@ -96,6 +102,18 @@ public class GL2Renderer implements GLSurfaceView.Renderer
 
         Bitmap bitmap=drawableToBitamp(sv_context.getDrawable(R.drawable.tran),screen_width,screen_height);
         setBitmap(0,bitmap,0);
+
+        //创建文字绘制测试对象
+        {
+            dt=new DrawText();
+
+            dt.setColor(1,1,0,1);
+            dt.setPosition(10,10);              //设置绘制位置
+            dt.setSize(24);                             //设置字符大小
+            dt.setText("Hello,World! 你好，世界！");      //设置文本
+
+            dt.refresh();                               //刷新内容
+        }
     }
 
     private Bitmap drawableToBitamp(Drawable drawable,int w,int h)

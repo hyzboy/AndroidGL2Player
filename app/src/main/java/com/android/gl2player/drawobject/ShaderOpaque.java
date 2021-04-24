@@ -24,6 +24,7 @@ public class ShaderOpaque extends ShaderModule {
 
     public ShaderOpaque()
     {
+        super("ShaderOpaque");
         init();
     }
 }

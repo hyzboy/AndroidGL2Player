@@ -20,6 +20,9 @@ public class DrawBitmap extends DrawObject
         texture.init(GLES20.GL_TEXTURE_2D);
     }
 
+    @Override
+    public void update(){}
+
     public void update(Bitmap bmp, int rotate)
     {
         texture.set(bmp);
