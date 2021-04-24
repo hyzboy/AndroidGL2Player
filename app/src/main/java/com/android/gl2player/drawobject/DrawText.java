@@ -17,7 +17,7 @@ public class DrawText extends DrawObject
     private Paint text_paint=new Paint();
 
     private GL2Texture texture=null;
-    private ShaderText shader=new ShaderText();
+    private ShaderOpaque shader=new ShaderOpaque();
 
     private String text;
     private float size=0;
@@ -26,8 +26,12 @@ public class DrawText extends DrawObject
     private int bmp_width =-1;
     private int bmp_height =-1;
 
-    private int draw_left=0;
-    private int draw_top=0;
+    private float draw_left=0;
+    private float draw_top=0;
+
+    private float surface_width=-1;
+    private float surface_height=-1;
+
     private float color[]={1,1,1,1};
 
     private int power_to_2(int value)
@@ -46,6 +50,12 @@ public class DrawText extends DrawObject
 
         text_paint.setAntiAlias(true);
         text_paint.setARGB(0xFF,0xFF,0xFF,0xFF);
+    }
+
+    public void setSurfaceSize(int w,int h)
+    {
+        surface_width=w;
+        surface_height=h;
     }
 
     public void setPosition(int l,int t)
@@ -87,7 +97,7 @@ public class DrawText extends DrawObject
         }
 
         if(text_bitmap==null)
-            text_bitmap=Bitmap.createBitmap(bmp_width, bmp_height,Bitmap.Config.ALPHA_8);
+            text_bitmap=Bitmap.createBitmap(bmp_width, bmp_height,Bitmap.Config.ARGB_8888);
 
         if(text_canvas==null)
             text_canvas=new Canvas(text_bitmap);
@@ -101,7 +111,10 @@ public class DrawText extends DrawObject
 
         text_bitmap.recycle();
 
-        render_layout.set(draw_left,draw_top, bmp_width, bmp_height);
+//        render_layout.set(  draw_left/surface_width,
+//                            draw_top/surface_height,
+//                            bmp_width/surface_width,
+//                            bmp_height/surface_height);
     }
 
     @Override
@@ -117,7 +130,7 @@ public class DrawText extends DrawObject
             texture.bind(0);
             render_layout.bind(shader.maPositionHandle);
             texture_uv.bind(shader.maTexCoordHandle);
-            shader.SetTextColor(color);
+//            shader.SetTextColor(color);
 
             GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP,0,4);
         shader.end();

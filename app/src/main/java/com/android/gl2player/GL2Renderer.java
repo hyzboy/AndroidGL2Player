@@ -107,6 +107,8 @@ public class GL2Renderer implements GLSurfaceView.Renderer
         {
             dt=new DrawText();
 
+            dt.setSurfaceSize(width,height);
+
             dt.setColor(1,1,0,1);
             dt.setPosition(10,10);              //设置绘制位置
             dt.setSize(24);                             //设置字符大小
