@@ -4,17 +4,19 @@ import javax.microedition.khronos.egl.EGLConfig;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Picture;
 import android.graphics.PixelFormat;
-import android.graphics.SurfaceTexture;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
-import android.view.View;
+
+import com.android.gl2player.async.GL2Event;
+import com.android.gl2player.async.GL2EventSetBitmap;
+import com.android.gl2player.async.GL2EventSetLayout;
+import com.android.gl2player.drawobject.DrawBitmap;
+import com.android.gl2player.drawobject.DrawObject;
+import com.android.gl2player.drawobject.DrawVideo;
 
 import java.nio.Buffer;
 import java.util.LinkedList;

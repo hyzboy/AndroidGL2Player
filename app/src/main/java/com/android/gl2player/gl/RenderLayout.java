@@ -1,4 +1,6 @@
-package com.android.gl2player;
+package com.android.gl2player.gl;
+
+import com.android.gl2player.gl.GL2FloatBuffer;
 
 public class RenderLayout extends GL2FloatBuffer
 {

@@ -1,12 +1,14 @@
-package com.android.gl2player;
+package com.android.gl2player.drawobject;
 
 import android.graphics.Bitmap;
 import android.opengl.GLES20;
 
+import com.android.gl2player.gl.GL2Texture;
+
 /**
  * 绘制位图
  */
-class DrawBitmap extends DrawObject
+public class DrawBitmap extends DrawObject
 {
     private GL2Texture texture=new GL2Texture();
     private ShaderOpaque shader=new ShaderOpaque();

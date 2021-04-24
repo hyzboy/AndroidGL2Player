@@ -1,9 +1,9 @@
-package com.android.gl2player;
+package com.android.gl2player.gl;
 
 import android.opengl.GLES20;
 import android.util.Log;
 
-public class ShaderModule {
+public abstract class ShaderModule {
     private final String TAG = "ShaderModule";
 
     private final String mVertexShader =
@@ -98,18 +98,15 @@ public class ShaderModule {
         return (true);
     }
 
-    public boolean init()
-    {
-        return false;
-    }
+    public abstract boolean init();
 
-    void begin() {
+    public void begin() {
         checkGlError("before glUseProgram()");
         GLES20.glUseProgram(mProgram);
         checkGlError("after glUseProgram()");
     }
 
-    void end() {
+    public void end() {
         GLES20.glUseProgram(0);
     }
 }

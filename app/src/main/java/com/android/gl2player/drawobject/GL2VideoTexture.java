@@ -1,8 +1,10 @@
-package com.android.gl2player;
+package com.android.gl2player.drawobject;
 
 import android.graphics.SurfaceTexture;
 import android.media.MediaPlayer;
 import android.view.Surface;
+
+import com.android.gl2player.gl.GL2Texture;
 
 import java.io.IOException;
 

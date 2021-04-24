@@ -1,4 +1,4 @@
-package com.android.gl2player;
+package com.android.gl2player.gl;
 
 import android.graphics.Bitmap;
 import android.opengl.GLES20;

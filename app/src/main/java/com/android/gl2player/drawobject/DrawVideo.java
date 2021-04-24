@@ -1,13 +1,12 @@
-package com.android.gl2player;
+package com.android.gl2player.drawobject;
 
-import android.content.Context;
 import android.media.MediaPlayer;
 import android.opengl.GLES20;
 
 /**
  * 绘制影片
  */
-class DrawVideo extends DrawObject
+public class DrawVideo extends DrawObject
 {
     private MediaPlayer player;
     private GL2VideoTexture video_texture=null;

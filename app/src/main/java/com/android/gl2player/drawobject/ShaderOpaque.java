@@ -1,6 +1,8 @@
-package com.android.gl2player;
+package com.android.gl2player.drawobject;
 
-public class ShaderOpaque extends ShaderModule{
+import com.android.gl2player.gl.ShaderModule;
+
+public class ShaderOpaque extends ShaderModule {
 
     private final String mFragmentShaderOpaque =
             "#extension GL_OES_EGL_image_external : require\n"

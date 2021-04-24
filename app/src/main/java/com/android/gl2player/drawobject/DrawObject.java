@@ -1,9 +1,12 @@
-package com.android.gl2player;
+package com.android.gl2player.drawobject;
+
+import com.android.gl2player.gl.QuadUV;
+import com.android.gl2player.gl.RenderLayout;
 
 /**
  * 绘制对象基类
  */
-class DrawObject
+public class DrawObject
 {
     public enum ObjectType
     {
