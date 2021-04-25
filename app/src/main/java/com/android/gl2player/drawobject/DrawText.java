@@ -111,11 +111,10 @@ public class DrawText extends DrawObject
 
         text_bitmap.recycle();
 
-//        render_layout.set(  draw_left/surface_width,
-//                            draw_top/surface_height,
-//                            bmp_width/surface_width,
-//                            bmp_height/surface_height);
-        render_layout.set(0,0,1,1);
+        render_layout.set(  draw_left/surface_width,
+                            draw_top/surface_height,
+                            bmp_width/surface_width,
+                            bmp_height/surface_height);
     }
 
     @Override

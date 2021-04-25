@@ -1,7 +1,5 @@
 package com.android.gl2player.gl;
 
-import com.android.gl2player.gl.GL2FloatBuffer;
-
 public class RenderLayout extends GL2FloatBuffer
 {
     private float[] vertices_data=null;
@@ -28,10 +26,6 @@ public class RenderLayout extends GL2FloatBuffer
      */
     public boolean set(float l, float t, float w, float h)
     {
-        if (w <= 0 || h <= 0||w > 1 || h > 1) {
-            return(false);
-        }
-
         l *= 2;
         t *= 2;
         w *= 2;
