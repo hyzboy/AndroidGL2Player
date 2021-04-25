@@ -17,7 +17,7 @@ public class DrawText extends DrawObject
     private Paint text_paint=new Paint();
 
     private GL2Texture texture=null;
-    private ShaderOpaque shader=new ShaderOpaque();
+    private ShaderText shader=new ShaderText();
 
     private String text;
     private float size=0;
@@ -115,6 +115,7 @@ public class DrawText extends DrawObject
 //                            draw_top/surface_height,
 //                            bmp_width/surface_width,
 //                            bmp_height/surface_height);
+        render_layout.set(0,0,1,1);
     }
 
     @Override

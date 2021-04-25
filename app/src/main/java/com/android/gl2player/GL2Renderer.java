@@ -158,14 +158,14 @@ public class GL2Renderer implements GLSurfaceView.Renderer
         if(obj==null)
         {
             DrawBitmap obj_bmp=new DrawBitmap();
-            obj_bmp.render_layout.set(0,0,1,1);       //设定为全屏
+            obj_bmp.SetLayout(0,0,1,1);       //设定为全屏
 
             draw_object[index]=obj_bmp;
             obj_bmp.update(bmp,rotate);
         }
         else
         {
-            if(obj.GetObjectType()!=DrawObject.ObjectType.Bitmap)
+            if(obj.isBitmap())
                 return(false);
 
             DrawBitmap obj_bmp= (DrawBitmap) obj;
@@ -198,10 +198,8 @@ public class GL2Renderer implements GLSurfaceView.Renderer
 
             video.play();
         }
-        else
+        else if(obj.isVideo())
         {
-            if (obj.GetObjectType() != DrawObject.ObjectType.Video) return;
-
             DrawVideo video = (DrawVideo) obj;
             video.play();
         }
@@ -216,11 +214,12 @@ public class GL2Renderer implements GLSurfaceView.Renderer
         if(obj==null)
             return;
 
-        if(obj.GetObjectType()!=DrawObject.ObjectType.Video)return;
+        if(obj.isVideo())
+        {
+            DrawVideo video = (DrawVideo) obj;
 
-        DrawVideo video= (DrawVideo) obj;
-
-        video.stop();
+            video.stop();
+        }
     }
 
     /**
@@ -239,7 +238,7 @@ public class GL2Renderer implements GLSurfaceView.Renderer
         DrawObject obj=draw_object[index];
         if(obj==null)return(false);
 
-        obj.render_layout.set(left,top,width,height);
+        obj.SetLayout(left,top,width,height);
         return(true);
     }
 

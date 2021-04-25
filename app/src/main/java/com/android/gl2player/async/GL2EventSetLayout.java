@@ -18,6 +18,6 @@ public class GL2EventSetLayout extends GL2Event{
     @Override
     public void run()
     {
-        draw_object.render_layout.set(left,top,width,height);
+        draw_object.SetLayout(left,top,width,height);
     }
 }

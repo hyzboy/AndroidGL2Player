@@ -8,7 +8,7 @@ import com.android.gl2player.gl.RenderLayout;
  */
 public abstract class DrawObject
 {
-    public enum ObjectType
+    protected enum ObjectType
     {
         Bitmap,
         Video,
@@ -19,7 +19,7 @@ public abstract class DrawObject
 
     protected static final QuadUV texture_uv =new QuadUV();
 
-    public RenderLayout render_layout=new RenderLayout();
+    protected RenderLayout render_layout=new RenderLayout();
 
     public DrawObject(ObjectType ot)
     {
@@ -35,6 +35,11 @@ public abstract class DrawObject
     public boolean isBitmap(){return type==ObjectType.Bitmap;}
     public boolean isVideo(){return type==ObjectType.Video;}
     public boolean isText(){return type==ObjectType.Text;}
+
+    public void SetLayout(float l,float t,float w,float h)
+    {
+        render_layout.set(l,t,w,h);
+    }
 
     public abstract void update();
     public abstract void draw();
