@@ -1,12 +1,13 @@
 package com.android.gl2player.drawobject;
 
+import com.android.gl2player.gl.GLClass;
 import com.android.gl2player.gl.QuadUV;
 import com.android.gl2player.gl.RenderLayout;
 
 /**
  * 绘制对象基类
  */
-public abstract class DrawObject
+public abstract class DrawObject extends GLClass
 {
     protected enum ObjectType
     {
@@ -23,6 +24,7 @@ public abstract class DrawObject
 
     public DrawObject(ObjectType ot)
     {
+        super("DrawObject:"+ot.name());
         type=ot;
         render_layout.init();
     }

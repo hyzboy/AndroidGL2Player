@@ -32,7 +32,7 @@ public class DrawText extends DrawObject
     private float surface_width=-1;
     private float surface_height=-1;
 
-    private float color[]={1,1,1,1};
+    private float color[]={1,1,0,1};
 
     private int power_to_2(int value)
     {
@@ -97,7 +97,7 @@ public class DrawText extends DrawObject
         }
 
         if(text_bitmap==null)
-            text_bitmap=Bitmap.createBitmap(bmp_width, bmp_height,Bitmap.Config.ARGB_8888);
+            text_bitmap=Bitmap.createBitmap(bmp_width, bmp_height,Bitmap.Config.ALPHA_8);
 
         if(text_canvas==null)
             text_canvas=new Canvas(text_bitmap);
@@ -126,12 +126,16 @@ public class DrawText extends DrawObject
     {
         if(texture==null)return;
 
-        GLES20.glDisable(GLES20.GL_BLEND);
+        ClearGLError();
+        GLES20.glEnable(GLES20.GL_BLEND);
+        CheckGLError("glEnable(BLEND)");
+        GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA,GLES20.GL_ONE_MINUS_SRC_ALPHA);
+        CheckGLError("glBlendFunc(SRC_ALPHA,ONE_MINUS_SRC_ALPHA)");
         shader.begin();
             texture.bind(0);
             render_layout.bind(shader.maPositionHandle);
             texture_uv.bind(shader.maTexCoordHandle);
-//            shader.SetTextColor(color);
+            shader.SetTextColor(color);
 
             GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP,0,4);
         shader.end();

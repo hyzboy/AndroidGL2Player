@@ -1,5 +1,7 @@
 package com.android.gl2player.drawobject;
 
+import android.opengl.GLES20;
+
 import com.android.gl2player.gl.ShaderModule;
 
 public class ShaderText extends ShaderModule
@@ -7,12 +9,12 @@ public class ShaderText extends ShaderModule
     private final String fragment_shader_text=
                     "precision highp float;\n" +
                     "varying vec2 vTextureCoord;\n" +
-  //                  "uniform vec4 vColor;\n" +
+                    "uniform vec4 vColor;\n" +
                     "uniform sampler2D sTexture;\n" +
                     "void main()\n" +
                     "{\n" +
-                    "  vec4 color=texture2D(sTexture,vTextureCoord);\n" +
-                    "  gl_FragColor = vec4(color.rgb,1.0);\n" +
+                    "  float alpha=texture2D(sTexture,vTextureCoord).a;\n" +
+                    "  gl_FragColor = vec4(vColor.rgb,vColor.a*alpha);\n" +
                     "}\n";
 
     private int color_location=-1;
@@ -24,11 +26,11 @@ public class ShaderText extends ShaderModule
         }
 
         ClearGLError();
-//        color_location =GLES20.glGetUniformLocation(mProgram,"vColor");
-//        CheckGLError("glGetUniformLocation vColor");
-//        if (color_location == -1) {
-//            return (false);
-//        }
+        color_location= GLES20.glGetUniformLocation(mProgram,"vColor");
+        CheckGLError("glGetUniformLocation vColor");
+        if (color_location == -1) {
+            return (false);
+        }
         return (true);
     }
 
@@ -40,8 +42,8 @@ public class ShaderText extends ShaderModule
 
     public void SetTextColor(float color[])
     {
-//        ClearGLError();
-//        GLES20.glUniform4fv(color_location,1,color,0);
-//        CheckGLError("SetTextColor,glUniform4fv()");
+        ClearGLError();
+        GLES20.glUniform4fv(color_location,1,color,0);
+        CheckGLError("SetTextColor,glUniform4fv()");
     }
 }
